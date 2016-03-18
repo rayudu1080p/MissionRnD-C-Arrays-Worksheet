@@ -15,6 +15,7 @@ NOTES:
 
 #include <iostream>
 #include <malloc.h>
+#include <string.h>
 
 struct student {
 	char *name;
@@ -22,5 +23,33 @@ struct student {
 };
 
 struct student ** topKStudents(struct student *students, int len, int K) {
-	return NULL;
+	struct student *std;
+	int i, j,tempsc;
+	char *tempst;
+	if (students != NULL && len > 0 && K > 0)
+	{
+		if (K > len)
+			K = len;
+		int i, j, s;
+		struct student **topstudents = (struct student **) malloc(sizeof(struct student *) * K);
+		for (i = 0; i < K; i++)
+			topstudents[i] = (struct student *) malloc(sizeof(struct student) * K);
+
+		for (i = 0; i < K; i++)
+			*topstudents[i] = students[i];
+
+		for (i = K; i < len; i++) {
+			s = 0;
+			for (j = 1; j < K; j++)
+			if (topstudents[s]->score > topstudents[j]->score)
+				s = j;
+			if (students[i].score > topstudents[s]->score)
+				*topstudents[s] = students[i];
+		}
+		return topstudents;
+	}
+	else
+		return NULL;
+
+	
 }
